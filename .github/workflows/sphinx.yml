@@ -1,0 +1,31 @@
+name: Build and Publish sphinx Docs
+on:
+  push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout reporsitory
+        uses: actions/checkout@v3
+    #   - name: install poetry
+    #     run: pipx install poetry
+      - name: setup python
+        uses: actions/setup-python@v3
+        with:
+            python-version: 3.8
+    #   - name: poetry install with pip
+    #     run: |
+    #         pip install poetry
+            
+    #   - name: Install Dependencies
+    #     run: |
+    #         poetry install
+      - name: Build Sphinx Documentation
+        run: |
+             sphinx-build docs docs/_build
+  
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs/_build
